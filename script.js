@@ -33,11 +33,9 @@ const gameBoard = (() => {
             if (currentTurn == 'player1') { 
                 gameBoard.array[square.getAttribute('data-row')][square.getAttribute('data-col')] = player1.getSelection();
                 square.textContent = player1.getSelection();
-                player1.moves.push(square);
             } else if (currentTurn == 'player2') {
                 gameBoard.array[square.getAttribute('data-row')][square.getAttribute('data-col')] = player2.getSelection();
                 square.textContent = player2.getSelection();
-                player2.moves.push(square);
             }
         }
     }
@@ -285,10 +283,6 @@ const gameController = (() => {
         // reset game board
         gameBoard.clearArray();
         gameBoard.renderContent();
-
-        // reset players' moves
-        player1.moves = [];
-        player2.moves = [];
 
         // reset game states
         gameController.gameEnded = false;
