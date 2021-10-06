@@ -1,4 +1,4 @@
-// a module pattern
+// a module pattern with IIFE
 const gameBoard = (() => {
     // initialize an empty array
     let array = [
@@ -6,6 +6,7 @@ const gameBoard = (() => {
                     ['','',''],
                     ['','','']
                 ];
+
     // spread the array into the DOM, and set data attributes
     const renderContent = () => {
         const squares = document.querySelectorAll('.square');
@@ -41,6 +42,7 @@ const gameBoard = (() => {
         }
     }
 
+    // amend to the winning moves array if the game has been decided as per checkResult function
     let winningMovesArray = [
                                 ['','',''],
                                 ['','',''],
@@ -131,10 +133,8 @@ const Player = (selection, name) => {
     const getSelection = () => selection;
     const playerName = name || 'dafault';
     const getName = () => playerName;
-    let isWinner = false;
-    const moves = [];
 
-    return {getSelection, getName, isWinner, moves};
+    return {getSelection, getName};
 }
 
 
@@ -218,14 +218,10 @@ const gameController = (() => {
             let result = gameBoard.checkResult();
 
             if (result == player1.getSelection()) {
-                player1.isWinner = true;
-                // player1.moves.forEach(square => square.classList.add('win'));
                 gameController.endGameMessage = `${player1.getSelection()} wins!`;
                 gameController.endGame();
                 gameController.showWinningMoves();
             } else if (result == player2.getSelection()) {
-                player2.isWinner = true;
-                // player2.moves.forEach(square => square.classList.add('win'));
                 gameController.endGameMessage = `${player2.getSelection()} wins!`;
                 gameController.endGame();
                 gameController.showWinningMoves();
@@ -242,10 +238,9 @@ const gameController = (() => {
 
             });
         });
-
-        return true;
     }
 
+    // by default
     let currentTurn = 'player1';
 
     const nextTurn = () => {
@@ -322,6 +317,7 @@ const gameController = (() => {
 })();
 
 
+// Global Codes Below
 
 // initialize the game board
 gameBoard.renderContent();
