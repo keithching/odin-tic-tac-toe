@@ -29,7 +29,6 @@ const gameBoard = (() => {
     
     // logic for adding move onto the game board
     const addMove = (currentTurn, square) => {
-        if (gameBoard.array[square.getAttribute('data-row')][square.getAttribute('data-col')] == '' && !gameController.gameEnded) {
             if (currentTurn == 'player1') { 
                 gameBoard.array[square.getAttribute('data-row')][square.getAttribute('data-col')] = player1.getSelection();
                 square.textContent = player1.getSelection();
@@ -37,7 +36,6 @@ const gameBoard = (() => {
                 gameBoard.array[square.getAttribute('data-row')][square.getAttribute('data-col')] = player2.getSelection();
                 square.textContent = player2.getSelection();
             }
-        }
     }
 
     // amend to the winning moves array if the game has been decided as per checkResult function
@@ -209,29 +207,32 @@ const gameController = (() => {
 
             square.addEventListener('click', () => {
 
-            // logic for adding a move
-            gameBoard.addMove(gameController.currentTurn, square);
+            // add move / check result / next turn only if both the selected square is blank and game is not ended
+            if (gameBoard.array[square.getAttribute('data-row')][square.getAttribute('data-col')] == '' && !gameController.gameEnded) {
+                // logic for adding a move
+                gameBoard.addMove(gameController.currentTurn, square);
 
-            // check result after every made move
-            let result = gameBoard.checkResult();
+                // check result after every made move
+                let result = gameBoard.checkResult();
 
-            if (result == player1.getSelection()) {
-                gameController.endGameMessage = `${player1.getSelection()} wins!`;
-                gameController.endGame();
-                gameController.showWinningMoves();
-            } else if (result == player2.getSelection()) {
-                gameController.endGameMessage = `${player2.getSelection()} wins!`;
-                gameController.endGame();
-                gameController.showWinningMoves();
-            }
-            else if (result == 'tie') {
-                gameController.endGameMessage = 'tie game';
-                gameController.endGame();                
-            }
-            else {
-                // game continue to next turn
-                gameController.currentTurn = gameController.nextTurn();
-                gameController.currentTurnMessage();
+                if (result == player1.getSelection()) {
+                    gameController.endGameMessage = `${player1.getSelection()} wins!`;
+                    gameController.endGame();
+                    gameController.showWinningMoves();
+                } else if (result == player2.getSelection()) {
+                    gameController.endGameMessage = `${player2.getSelection()} wins!`;
+                    gameController.endGame();
+                    gameController.showWinningMoves();
+                }
+                else if (result == 'tie') {
+                    gameController.endGameMessage = 'tie game';
+                    gameController.endGame();                
+                }
+                else {
+                    // game continue to next turn
+                    gameController.currentTurn = gameController.nextTurn();
+                    gameController.currentTurnMessage();
+                }                
             }
 
             });
